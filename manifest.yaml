@@ -1,0 +1,5 @@
+version: "1"
+
+capabilities:
+  - contract_id: "getalbums"
+  - contract_id: "abesh:httpserver"
