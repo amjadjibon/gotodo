@@ -52,3 +52,33 @@ func GetAllAlbums() ([]*model.Album, error) {
 
 	return modAlbum, nil
 }
+
+func GetWalletByID(id int) (*model.Album, error) {
+	panic("implement me")
+}
+
+type updateAlbumModel struct {
+	Id       int64
+	Price    float64 `pg:"price"`
+	ArtistId int64  `pg:"artist_id"`
+}
+
+func UpdateAlbum(inputObj *model.UpdateModelInput) error {
+	db := getDB("postgres://user:pass@localhost:5432/db_name?sslmode=disable")
+	defer func() {
+		_ = db.Close()
+	}()
+
+
+	m := &updateAlbumModel{
+		Price:    inputObj.Price,
+		ArtistId: inputObj.ArtistId,
+	}
+
+	_, err := db.Model(&m).Where("id = ?", inputObj.Id).Update()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

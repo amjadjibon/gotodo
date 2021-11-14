@@ -2,6 +2,8 @@ version: "1"
 
 capabilities:
   - contract_id: "getalbums"
+  - contract_id: "updatealbum"
+  - contract_id: "getalbumbyid"
   - contract_id: "abesh:httpserver2"
     values:
       host: "0.0.0.0"
@@ -14,6 +16,18 @@ triggers:
       method: "GET"
       path: "/albums"
     service: "getalbums"
+
+  - trigger: "abesh:httpserver2"
+    trigger_values:
+      method: "GET"
+      path: "/album/:id"
+    service: "getalbumbyid"
+
+  - trigger: "abesh:httpserver2"
+    trigger_values:
+      method: "POST"
+      path: "/update/album"
+    service: "updatealbum"
 
 start:
   - "abesh:httpserver2"
