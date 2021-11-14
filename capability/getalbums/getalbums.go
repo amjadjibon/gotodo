@@ -3,11 +3,13 @@ package getalbums
 import (
 	"context"
 	"encoding/json"
-	"github.com/amjadjibon/gotodo/model"
+
 	"github.com/mkawserm/abesh/constant"
 	"github.com/mkawserm/abesh/iface"
 	abeshModel "github.com/mkawserm/abesh/model"
 	"github.com/mkawserm/abesh/registry"
+
+	"github.com/amjadjibon/gotodo/dao"
 )
 
 type GetAlbums struct {
@@ -45,21 +47,10 @@ func (g *GetAlbums) GetConfigMap() abeshModel.ConfigMap {
 }
 
 func (g *GetAlbums) Serve(ctx context.Context, input *abeshModel.Event) (*abeshModel.Event, error) {
-	var albums []model.Album
-
-	album1 := model.Album{
-		Id:       1,
-		Title:    "New1",
-		ArtistId: 1,
-		Artist:   &model.User{
-			Id:    1,
-			Name:  "Artist1",
-			Genre: "New",
-		},
-		Price:    100,
+	albums, err := dao.GetAllAlbums()
+	if err != nil {
+		return nil, err
 	}
-
-	albums = append(albums, album1)
 
 	albumsByte, err := json.Marshal(albums)
 	if err != nil {
