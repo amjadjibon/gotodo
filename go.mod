@@ -3,8 +3,8 @@ module github.com/amjadjibon/gotodo
 go 1.17
 
 require (
-	github.com/mkawserm/abesh v0.15.6
-	github.com/mkawserm/httpserver2 v0.14.0
+	github.com/mkawserm/abesh v0.16.0
+	github.com/mkawserm/httpserver2 v0.15.0
 )
 
 require (
