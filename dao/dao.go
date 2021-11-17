@@ -7,29 +7,30 @@ import (
 )
 
 type Album struct {
-	Id        int     `pg:"id"`
-	Title     string  `pg:"title"`
-	Artist_Id int     `pg:"artist_id"`
-	Price     float64 `pg:"price"`
+	tableName struct{} `pg:"album"`
+	Id        int      `pg:"id"`
+	Title     string   `pg:"title"`
+	Artist_Id int      `pg:"artist_id"`
+	Price     float64  `pg:"price"`
 }
-
-// func getDB(dsn string) *pg.DB {
-// 	opt, err := pg.ParseURL(dsn)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	return pg.Connect(opt)
-// }
 
 func getDB() *pg.DB {
-	opt := pg.Options{
-		User:     "rootuser",
-		Password: "rootpassword",
-		Database: "postgres",
+	opt, err := pg.ParseURL("postgres://baseuser:basepassword@localhost:5432/postgres?sslmode=disable")
+	if err != nil {
+		panic(err)
 	}
-
-	return pg.Connect(&opt)
+	return pg.Connect(opt)
 }
+
+//func getDB() *pg.DB {
+//	opt := pg.Options{
+//		User:     "rootuser",
+//		Password: "rootpassword",
+//		Database: "postgres",
+//	}
+//
+//	return pg.Connect(&opt)
+//}
 
 func GetAllAlbums() ([]*model.Album, error) {
 	db := getDB()
