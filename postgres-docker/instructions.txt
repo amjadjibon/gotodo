@@ -1,0 +1,7 @@
+Commands to run SQL command in docker container:
+
+1. sudo docker-compose exec postgres sh
+
+2. psql -U <database username you want to connect with> -d <database name>
+	
+	example: psql -U rootuser -d postgres
