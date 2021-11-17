@@ -6,69 +6,98 @@ import (
 	"github.com/amjadjibon/gotodo/model"
 )
 
-type albumModel struct {
-	Id       int64   `pg:"id"`
-	Title    string  `pg:"title"`
-	ArtistId int64   `pg:"artistId"`
-	Price    float64 `pg:"price"`
+type Album struct {
+	Id        int     `pg:"id"`
+	Title     string  `pg:"title"`
+	Artist_Id int     `pg:"artist_id"`
+	Price     float64 `pg:"price"`
 }
 
-func getDB(dsn string) *pg.DB {
-	opt, err := pg.ParseURL(dsn)
-	if err != nil {
-		panic(err)
+// func getDB(dsn string) *pg.DB {
+// 	opt, err := pg.ParseURL(dsn)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	return pg.Connect(opt)
+// }
+
+func getDB() *pg.DB {
+	opt := pg.Options{
+		User:     "rootuser",
+		Password: "rootpassword",
+		Database: "postgres",
 	}
 
-	return pg.Connect(opt)
+	return pg.Connect(&opt)
 }
 
 func GetAllAlbums() ([]*model.Album, error) {
-	var alb []albumModel
+	db := getDB()
+	defer db.Close()
 
-	db := getDB("postgres://user:pass@localhost:5432/db_name?sslmode=disable")
-	defer func() {
-		_ = db.Close()
-	}()
+	var pgAlbums []Album
 
-	err := db.Model(&alb).Select()
+	err := db.Model(&pgAlbums).Select()
 	if err != nil {
 		return nil, err
 	}
 
-	var modAlbum []*model.Album
+	if pgAlbums == nil {
+		println("\nError!\n")
+	}
 
-	for _, v := range alb {
+	var modAlbums []*model.Album
+
+	for _, v := range pgAlbums {
 		ab := &model.Album{
 			Id:       v.Id,
 			Title:    v.Title,
-			ArtistId: v.ArtistId,
+			ArtistId: v.Artist_Id,
 			Price:    v.Price,
 		}
 
-		modAlbum = append(modAlbum, ab)
+		modAlbums = append(modAlbums, ab)
 
 		ab = new(model.Album)
+	}
+
+	return modAlbums, nil
+}
+
+func GetAlbumByID(id int) (*model.Album, error) {
+	pgAlbum := new(Album)
+	// var modAlbum *model.Album
+
+	db := getDB()
+	defer db.Close()
+
+	err := db.Model(pgAlbum).Where("pgAlbum.Id = ?", id).Select()
+	if err != nil {
+		return nil, err
+	}
+
+	modAlbum := &model.Album{
+		// Id:       pgAlbum.Id,
+		Title: pgAlbum.Title,
+		// ArtistId: pgAlbum.Artist_Id,
+		// Price:    pgAlbum.Price,
 	}
 
 	return modAlbum, nil
 }
 
-func GetWalletByID(id int) (*model.Album, error) {
-	panic("implement me")
-}
-
 type updateAlbumModel struct {
 	Id       int64
 	Price    float64 `pg:"price"`
-	ArtistId int64  `pg:"artist_id"`
+	ArtistId int64   `pg:"artist_id"`
 }
 
 func UpdateAlbum(inputObj *model.UpdateModelInput) error {
-	db := getDB("postgres://user:pass@localhost:5432/db_name?sslmode=disable")
+	// db := getDB("postgres://rootuser:rootpassword@localhost:5432/postgres?sslmode=disable")
+	db := getDB()
 	defer func() {
 		_ = db.Close()
 	}()
-
 
 	m := &updateAlbumModel{
 		Price:    inputObj.Price,
@@ -76,6 +105,19 @@ func UpdateAlbum(inputObj *model.UpdateModelInput) error {
 	}
 
 	_, err := db.Model(&m).Where("id = ?", inputObj.Id).Update()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func CreateAlbum(inputObj *model.Album) error {
+	// db := getDB("postgres://rootuser:rootpassword@localhost:5432/postgres?sslmode=disable")
+	db := getDB()
+	defer db.Close()
+
+	_, err := db.Model(&inputObj).Insert()
 	if err != nil {
 		return err
 	}

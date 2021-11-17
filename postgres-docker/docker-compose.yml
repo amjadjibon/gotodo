@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres_0
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-rootuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rootpassword}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+       # copy the sql script to create tables
+       - ./sql/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
+       # copy the sql script to fill tables
+       - ./sql/fill_table.sql:/docker-entrypoint-initdb.d/fill_table.sql
+    ports:
+      - "5431:5432"
+    networks:
+      - postgres
+    restart: always
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+    postgres:

@@ -17,9 +17,8 @@ type GetAlbums struct {
 	mCM abeshModel.ConfigMap
 }
 
-
 func (g *GetAlbums) Name() string {
-	return "getalbums"
+	return "getalbumbyid"
 }
 
 func (g *GetAlbums) Version() string {
@@ -55,7 +54,7 @@ func (g *GetAlbums) Serve(ctx context.Context, input *abeshModel.Event) (*abeshM
 		return nil, err
 	}
 
-	albums, err := dao.GetWalletByID(int(parseInt))
+	albums, err := dao.GetAlbumByID(int(parseInt))
 	if err != nil {
 		return nil, err
 	}

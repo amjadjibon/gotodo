@@ -17,7 +17,6 @@ type UpdateAlbum struct {
 	mCM abeshModel.ConfigMap
 }
 
-
 func (g *UpdateAlbum) Name() string {
 	return "getalbums"
 }
@@ -60,10 +59,10 @@ func (g *UpdateAlbum) Serve(ctx context.Context, input *abeshModel.Event) (*abes
 	}
 
 	albums := &model.Album{
-		Id:       inputObj.Id,
-		Title:    inputObj.Title,
-		ArtistId: inputObj.ArtistId,
-		Price:    inputObj.Price,
+		// Id:       inputObj.Id,
+		Title: inputObj.Title,
+		// ArtistId: inputObj.ArtistId,
+		// Price: inputObj.Price,
 	}
 
 	albumsByte, err := json.Marshal(albums)

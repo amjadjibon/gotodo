@@ -4,18 +4,16 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/amjadjibon/gotodo/dao"
 	"github.com/mkawserm/abesh/constant"
 	"github.com/mkawserm/abesh/iface"
 	abeshModel "github.com/mkawserm/abesh/model"
 	"github.com/mkawserm/abesh/registry"
-
-	"github.com/amjadjibon/gotodo/dao"
 )
 
 type GetAlbums struct {
 	mCM abeshModel.ConfigMap
 }
-
 
 func (g *GetAlbums) Name() string {
 	return "getalbums"
@@ -51,6 +49,13 @@ func (g *GetAlbums) Serve(ctx context.Context, input *abeshModel.Event) (*abeshM
 	if err != nil {
 		return nil, err
 	}
+
+	// albums := model.Album{
+	// 	Id:       1,
+	// 	Title:    "hello",
+	// 	ArtistId: 5,
+	// 	Price:    100.55,
+	// }
 
 	albumsByte, err := json.Marshal(albums)
 	if err != nil {
