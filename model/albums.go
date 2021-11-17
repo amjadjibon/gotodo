@@ -1,22 +1,18 @@
 package model
 
 type User struct {
-	Id    int64  `json:"id"`
+	Id    int    `json:"id"`
 	Name  string `json:"name"`
 	Genre string `json:"genre"`
 }
 
 type Album struct {
-	Id       int    `json:"id"`
-	Title    string `json:"title"`
-	ArtistId int    `json:"artist_id"`
-	// Artist   *User   `json:"artist"`
-	Price float64 `json:"price"`
+	Id       int     `json:"id"`
+	Title    string  `json:"title"`
+	ArtistId int     `json:"artist_id"`
+	Price    float64 `json:"price"`
 }
 
-type UpdateModelInput struct {
-	Id       int64   `json:"id"`
-	Title    string  `json:"title"`
-	Price    float64 `json:"price"`
-	ArtistId int64   `json:"artist_id"`
+type Response struct {
+	Message string `json:"msg"`
 }

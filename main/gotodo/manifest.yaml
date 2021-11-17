@@ -1,10 +1,12 @@
 version: "1"
 
 capabilities:
-  - contract_id: "getalbums"
-  - contract_id: "updatealbum"
-  - contract_id: "getalbumbyid"
   - contract_id: "createalbum"
+  - contract_id: "getalbums"
+  - contract_id: "getalbumbyid"
+  - contract_id: "updatealbum"
+  - contract_id: "deletealbum"
+
   - contract_id: "abesh:httpserver2"
     values:
       host: "0.0.0.0"
@@ -12,6 +14,12 @@ capabilities:
       default_request_timeout: "5s"
 
 triggers:
+  - trigger: "abesh:httpserver2"
+    trigger_values:
+      method: "POST"
+      path: "/create/album"
+    service: "createalbum"
+
   - trigger: "abesh:httpserver2"
     trigger_values:
       method: "GET"
@@ -26,15 +34,15 @@ triggers:
 
   - trigger: "abesh:httpserver2"
     trigger_values:
-      method: "POST"
+      method: "PUT"
       path: "/update/album"
     service: "updatealbum"
 
   - trigger: "abesh:httpserver2"
     trigger_values:
-      method: "POST"
-      path: "/create/album"
-    service: "createalbum"
+      method: "DELETE"
+      path: "/album/:id"
+    service: "deletealbum"
 
 start:
   - "abesh:httpserver2"

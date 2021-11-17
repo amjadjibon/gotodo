@@ -7,6 +7,7 @@ import (
 	_ "github.com/mkawserm/httpserver2/capability/httpserver2"
 
 	_ "github.com/amjadjibon/gotodo/capability/createalbum"
+	_ "github.com/amjadjibon/gotodo/capability/deletealbum"
 	_ "github.com/amjadjibon/gotodo/capability/getalbumbyid"
 	_ "github.com/amjadjibon/gotodo/capability/getalbums"
 	_ "github.com/amjadjibon/gotodo/capability/updatealbum"
