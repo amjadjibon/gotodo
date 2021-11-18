@@ -47,7 +47,8 @@ func (g *UpdateAlbum) GetConfigMap() abeshModel.ConfigMap {
 }
 
 func (g *UpdateAlbum) Serve(ctx context.Context, input *abeshModel.Event) (*abeshModel.Event, error) {
-	inputObj := new(model.UpdateModelInput)
+	inputObj := new(model.Album)
+
 	err := json.Unmarshal(input.Value, inputObj)
 	if err != nil {
 		return nil, err
@@ -58,14 +59,7 @@ func (g *UpdateAlbum) Serve(ctx context.Context, input *abeshModel.Event) (*abes
 		return nil, err
 	}
 
-	albums := &model.Album{
-		// Id:       inputObj.Id,
-		Title: inputObj.Title,
-		// ArtistId: inputObj.ArtistId,
-		// Price: inputObj.Price,
-	}
-
-	albumsByte, err := json.Marshal(albums)
+	albumsByte, err := json.Marshal(inputObj)
 	if err != nil {
 		return nil, err
 	}

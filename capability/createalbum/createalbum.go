@@ -59,13 +59,6 @@ func (g *CreateAlbum) Serve(ctx context.Context, input *abeshModel.Event) (*abes
 		return nil, err
 	}
 
-	// album := &model.Album{
-	// 	Id:       inputObj.Id,
-	// 	Title:    inputObj.Title,
-	// 	ArtistId: inputObj.ArtistId,
-	// 	Price:    inputObj.Price,
-	// }
-
 	albumsByte, err := json.Marshal(inputObj)
 	if err != nil {
 		return nil, err
